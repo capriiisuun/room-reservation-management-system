@@ -96,9 +96,7 @@ Open your browser at:
 
 http://127.0.0.1:8000/
 
-## 🖼️ Screenshots
 
-Screenshots of the application interface can be added here to demonstrate the room management and reservation workflows.
 
 ## 🔒 Security Notes
 
