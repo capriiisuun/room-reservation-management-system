@@ -1,0 +1,57 @@
+{% extends "app2/base.html" %}
+
+{% block title %}Détails de la Réservation{% endblock %}
+
+{% block content %}
+<h1>Détails de la Réservation</h1>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Réservation #{{ reservation.id }}</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Informations générales</h6>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item"><strong>Salle:</strong> {{ reservation.salle.nom }}</li>
+                    <li class="list-group-item"><strong>Date:</strong> {{ reservation.date_debut|date:"d/m/Y" }}</li>
+                    <li class="list-group-item"><strong>Horaire:</strong> {{ reservation.date_debut|time:"H:i" }} - {{ reservation.date_fin|time:"H:i" }}</li>
+                    <li class="list-group-item"><strong>Statut:</strong> 
+                        <span class="badge {% if reservation.statut == 'Confirmée' %}bg-success{% elif reservation.statut == 'En attente' %}bg-warning{% else %}bg-danger{% endif %}">
+                            {{ reservation.statut }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="col-md-6">
+                <h6>Équipements de la salle</h6>
+                <ul class="list-group list-group-flush mb-3">
+                    {% for equipement in reservation.salle.equipements.all %}
+                    <li class="list-group-item">{{ equipement.nom }}</li>
+                    {% empty %}
+                    <li class="list-group-item">Aucun équipement</li>
+                    {% endfor %}
+                </ul>
+                
+                <h6>Équipements externes</h6>
+                <ul class="list-group list-group-flush mb-3">
+                    {% for equipement in reservation.equipements_externes.all %}
+                    <li class="list-group-item">{{ equipement.nom }} - {{ equipement.description }}</li>
+                    {% empty %}
+                    <li class="list-group-item">Aucun équipement externe</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <a href="{% url 'mes_reservations' %}" class="btn btn-secondary">Retour</a>
+            {% if reservation.statut != 'Annulée' %}
+            <a href="{% url 'annuler_reservation' reservation.id %}" class="btn btn-danger">Annuler la réservation</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

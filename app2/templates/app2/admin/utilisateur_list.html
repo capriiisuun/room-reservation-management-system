@@ -1,0 +1,28 @@
+{% extends 'app2/base.html' %}
+{% block title %}Gestion des utilisateurs{% endblock %}
+{% block content %}
+<h1>Utilisateurs</h1>
+<a class="btn btn-primary mb-3" href="{% url 'gestion_utilisateur_create' %}">+ Nouvel utilisateur</a>
+<table class="table">
+  <thead>
+    <tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Staff</th><th>Actif</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.username }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ u.role }}</td>
+      <td>{{ u.is_staff|yesno:"✔,✘" }}</td>
+      <td>{{ u.is_active|yesno:"✔,✘" }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'gestion_utilisateur_update' u.pk %}">✏️</a>
+        <a class="btn btn-sm btn-outline-danger" href="{% url 'gestion_utilisateur_delete' u.pk %}">🗑️</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">Aucun utilisateur trouvé.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

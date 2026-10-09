@@ -1,0 +1,11 @@
+{% extends 'app2/base.html' %}
+{% block title %}Supprimer droit{% endblock %}
+{% block content %}
+<h1>Supprimer droit d’accès</h1>
+<p>Confirmez-vous la suppression du droit « {{ droit.type_droit }} » pour « {{ droit.utilisateur.username }} » ?</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger">Oui, supprimer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_droitacces_list' %}">Annuler</a>
+</form>
+{% endblock %}

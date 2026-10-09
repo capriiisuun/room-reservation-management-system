@@ -1,0 +1,31 @@
+{% extends 'app2/base.html' %}
+{% block title %}Gestion des Équipements{% endblock %}
+{% block content %}
+<h1>Équipements</h1>
+<a class="btn btn-primary mb-3" href="{% url 'gestion_equipement_create' %}">+ Nouvel équipement</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Salle</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for eq in equipements %}
+    <tr>
+      <td>{{ eq.nom }}</td>
+      <td>{{ eq.salle.nom }}</td>
+      <td>{{ eq.description|truncatechars:40 }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'gestion_equipement_update' eq.pk %}">✏️</a>
+        <a class="btn btn-sm btn-outline-danger" href="{% url 'gestion_equipement_delete' eq.pk %}">🗑️</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">Aucun équipement trouvé.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

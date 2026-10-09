@@ -1,0 +1,14 @@
+{% extends 'app2/base.html' %}
+{% block title %}
+  {% if form.instance.pk %}Modifier droit{% else %}Ajouter droit{% endif %}
+{% endblock %}
+{% block content %}
+<h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} droit d’accès</h1>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">{{ form.utilisateur.label_tag }} {{ form.utilisateur }}</div>
+  <div class="mb-3">{{ form.type_droit.label_tag }} {{ form.type_droit }}</div>
+  <button class="btn btn-success">Enregistrer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_droitacces_list' %}">Annuler</a>
+</form>
+{% endblock %}

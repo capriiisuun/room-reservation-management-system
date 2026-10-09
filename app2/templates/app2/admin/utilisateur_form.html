@@ -1,0 +1,13 @@
+{% extends 'app2/base.html' %}
+{% block title %}
+  {% if form.instance.pk %}Modifier utilisateur{% else %}Ajouter utilisateur{% endif %}
+{% endblock %}
+{% block content %}
+<h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} utilisateur</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-success">Enregistrer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_utilisateur_list' %}">Annuler</a>
+</form>
+{% endblock %}

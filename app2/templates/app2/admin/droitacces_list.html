@@ -1,0 +1,31 @@
+{% extends 'app2/base.html' %}
+{% block title %}Gestion des droits d’accès{% endblock %}
+{% block content %}
+<h1>Droits d’accès</h1>
+<a class="btn btn-primary mb-3" href="{% url 'gestion_droitacces_create' %}">+ Nouveau droit</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Utilisateur</th>
+      <th>Type de droit</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for droit in droits %}
+    <tr>
+      <td>{{ droit.utilisateur.username }}</td>
+      <td>{{ droit.type_droit }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-secondary"
+           href="{% url 'gestion_droitacces_update' droit.pk %}">✏️</a>
+        <a class="btn btn-sm btn-outline-danger"
+           href="{% url 'gestion_droitacces_delete' droit.pk %}">🗑️</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Aucun droit d’accès défini.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

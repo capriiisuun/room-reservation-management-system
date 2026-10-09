@@ -1,0 +1,67 @@
+{% extends "app2/base.html" %}
+{% block title %}Réserver {{ salle.nom }}{% endblock %}
+{% block content %}
+<h1>Réserver la salle : {{ salle.nom }}</h1>
+<p><strong>Capacité :</strong> {{ salle.capacite }} personnes</p>
+<p>{{ salle.description }}</p>
+
+<div class="card mt-4">
+  <div class="card-header"><h5>Formulaire de réservation</h5></div>
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- Date -->
+      <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" id="date" name="date"
+               class="form-control" required
+               value="{{ initial_date }}"
+               min="{{ today|date:'Y-m-d' }}">
+      </div>
+
+      <!-- Créneau -->
+      <div class="mb-3">
+        <label for="creneau" class="form-label">Créneau horaire</label>
+        <select id="creneau" name="creneau" class="form-select" required>
+          <option value="">-- Sélectionnez --</option>
+          {% for c in creneaux %}
+            <option value="{{ c.id }}"
+              {% if initial_creneau|stringformat:"s" == c.id|stringformat:"s" %}
+                selected
+              {% endif %}>
+              {{ c.heure_debut|time:"H:i" }} – {{ c.heure_fin|time:"H:i" }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Équipements externes -->
+      {% if available_ext_eqs %}
+      <div class="mb-3">
+        <label class="form-label">Équipements externes souhaités</label>
+        <div class="row">
+          {% for ext in available_ext_eqs %}
+          <div class="col-md-4">
+            <div class="form-check">
+              <input class="form-check-input"
+                     type="checkbox"
+                     name="equipements_externes"
+                     id="ext{{ ext.id }}"
+                     value="{{ ext.id }}">
+              <label class="form-check-label" for="ext{{ ext.id }}">
+                {{ ext.nom }}
+              </label>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">Réserver</button>
+      <a href="{% url 'liste_salles' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

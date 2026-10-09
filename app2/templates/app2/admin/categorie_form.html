@@ -1,0 +1,14 @@
+{% extends 'app2/base.html' %}
+{% block title %}
+  {% if form.instance.pk %}Modifier catégorie{% else %}Ajouter catégorie{% endif %}
+{% endblock %}
+{% block content %}
+<h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} catégorie</h1>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">{{ form.nom.label_tag }} {{ form.nom }}</div>
+  <div class="mb-3">{{ form.type_salle.label_tag }} {{ form.type_salle }}</div>
+  <button class="btn btn-success">Enregistrer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_categorie_list' %}">Annuler</a>
+</form>
+{% endblock %}

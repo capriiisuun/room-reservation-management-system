@@ -1,0 +1,38 @@
+{% extends 'app2/base.html' %}
+{% block title %}Gestion des Réservations{% endblock %}
+{% block content %}
+<h1>Réservations</h1>
+<a class="btn btn-primary mb-3" href="{% url 'gestion_reservation_create' %}">+ Nouvelle réservation</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th><th>Utilisateur</th><th>Salle</th><th>Créneau</th>
+      <th>Début</th><th>Fin</th><th>Statut</th><th>Équipements externes</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in reservations %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.utilisateur.username }}</td>
+      <td>{{ r.salle.nom }}</td>
+      <td>{{ r.creneau }}</td>
+      <td>{{ r.date_debut|date:"Y-m-d H:i" }}</td>
+      <td>{{ r.date_fin|date:"Y-m-d H:i" }}</td>
+      <td>{{ r.statut }}</td>
+      <td>
+        {% for ext in r.equipements_externes.all %}
+          {{ ext.nom }}{% if not forloop.last %}, {% endif %}
+        {% empty %}–{% endfor %}
+      </td>
+      <td>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'gestion_reservation_update' r.pk %}">✏️</a>
+        <a class="btn btn-sm btn-outline-danger"    href="{% url 'gestion_reservation_delete' r.pk %}">🗑️</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="9">Aucune réservation trouvée.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

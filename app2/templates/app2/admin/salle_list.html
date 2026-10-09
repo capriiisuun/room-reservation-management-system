@@ -1,0 +1,24 @@
+{% extends 'app2/base.html' %}
+{% block title %}Gestion des Salles{% endblock %}
+{% block content %}
+<h1>Gestion des Salles</h1>
+<a class="btn btn-primary mb-3" href="{% url 'gestion_salle_create' %}">+ Nouvelle salle</a>
+<table class="table table-striped">
+  <thead>
+    <tr><th>Nom</th><th>Capacité</th><th>Catégorie</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for s in salles %}
+    <tr>
+      <td>{{ s.nom }}</td>
+      <td>{{ s.capacite }}</td>
+      <td>{{ s.categorie.nom }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'gestion_salle_update' s.pk %}">✏️</a>
+        <a class="btn btn-sm btn-outline-danger" href="{% url 'gestion_salle_delete' s.pk %}">🗑️</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

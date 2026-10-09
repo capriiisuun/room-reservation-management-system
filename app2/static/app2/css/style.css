@@ -1,0 +1,27 @@
+.reservation-cell {
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    margin-bottom: 2px;
+}
+
+.calendar-container {
+    margin-top: 20px;
+}
+
+@media print {
+    .navbar, .card, form, .btn, .no-print {
+        display: none !important;
+    }
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .print-only {
+        display: block !important;
+    }
+}
+
+.print-only {
+    display: none;
+}

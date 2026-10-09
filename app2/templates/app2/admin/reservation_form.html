@@ -1,0 +1,20 @@
+{% extends 'app2/base.html' %}
+{% block title %}
+  {% if form.instance.pk %}Modifier Réservation{% else %}Ajouter Réservation{% endif %}
+{% endblock %}
+{% block content %}
+<h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} Réservation</h1>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">{{ form.utilisateur.label_tag }} {{ form.utilisateur }}</div>
+  <div class="mb-3">{{ form.salle.label_tag }}       {{ form.salle }}</div>
+  <div class="mb-3">{{ form.creneau.label_tag }}     {{ form.creneau }}</div>
+  <div class="mb-3">{{ form.date_debut.label_tag }}  {{ form.date_debut }}</div>
+  <div class="mb-3">{{ form.date_fin.label_tag }}    {{ form.date_fin }}</div>
+  <div class="mb-3">{{ form.statut.label_tag }}      {{ form.statut }}</div>
+  <div class="mb-3">{{ form.equipements_externes.label_tag }}</div>
+  <div class="mb-3">{{ form.equipements_externes }}</div>
+  <button class="btn btn-success">Enregistrer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_reservation_list' %}">Annuler</a>
+</form>
+{% endblock %}

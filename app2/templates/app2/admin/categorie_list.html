@@ -1,0 +1,23 @@
+{% extends 'app2/base.html' %}
+{% block title %}Gestion des catégories{% endblock %}
+{% block content %}
+<h1>Catégories de salles</h1>
+<a class="btn btn-primary mb-3" href="{% url 'gestion_categorie_create' %}">+ Nouvelle catégorie</a>
+<table class="table table-striped">
+  <thead><tr><th>Nom</th><th>Type</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for c in categories %}
+    <tr>
+      <td>{{ c.nom }}</td>
+      <td>{{ c.type_salle }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'gestion_categorie_update' c.pk %}">✏️</a>
+        <a class="btn btn-sm btn-outline-danger"    href="{% url 'gestion_categorie_delete' c.pk %}">🗑️</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Aucune catégorie trouvée.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

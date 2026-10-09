@@ -1,0 +1,11 @@
+{% extends 'app2/base.html' %}
+{% block title %}Supprimer catégorie{% endblock %}
+{% block content %}
+<h1>Supprimer catégorie</h1>
+<p>Êtes-vous sûr de vouloir supprimer « {{ categorie.nom }} » ({{ categorie.type_salle }}) ?</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger">Oui, supprimer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_categorie_list' %}">Annuler</a>
+</form>
+{% endblock %}

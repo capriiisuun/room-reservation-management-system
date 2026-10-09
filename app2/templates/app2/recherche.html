@@ -1,0 +1,106 @@
+{% extends "app2/base.html" %}
+
+{% block title %}Recherche de Salles{% endblock %}
+
+{% block content %}
+<h1>Recherche de Salles</h1>
+
+<div class="card mt-4">
+  <div class="card-header"><h5>Critères de recherche</h5></div>
+  <div class="card-body">
+    <form method="get" action="{% url 'recherche_salles' %}">
+      <div class="row">
+        <!-- Date -->
+        <div class="col-md-3 mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input type="date"
+                 class="form-control"
+                 id="date"
+                 name="date"
+                 value="{{ request.GET.date }}"
+                 min="{{ today|date:'Y-m-d' }}">
+        </div>
+
+        <!-- Créneau -->
+        <div class="col-md-3 mb-3">
+          <label for="creneau" class="form-label">Créneau</label>
+          <select class="form-select" id="creneau" name="creneau">
+            <option value="">Tous</option>
+            {% for c in creneaux %}
+              <option value="{{ c.id }}"
+                {% if request.GET.creneau == c.id|stringformat:"i" %}selected{% endif %}>
+                {{ c.heure_debut|time:"H:i" }} – {{ c.heure_fin|time:"H:i" }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Capacité -->
+        <div class="col-md-2 mb-3">
+          <label for="capacite" class="form-label">Capacité ≥</label>
+          <input type="number"
+                 class="form-control"
+                 id="capacite"
+                 name="capacite"
+                 value="{{ request.GET.capacite }}"
+                 min="1">
+        </div>
+
+        <!-- **Nouvelle catégorie** -->
+        <div class="col-md-4 mb-3">
+          <label for="categorie" class="form-label">Catégorie</label>
+          <select class="form-select" id="categorie" name="categorie">
+            <option value="">Toutes</option>
+            {% for cat in categories %}
+              <option value="{{ cat.id }}"
+                {% if request.GET.categorie == cat.id|stringformat:"i" %}selected{% endif %}>
+                {{ cat.nom }} ({{ cat.type_salle }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+  </div>
+</div>
+
+{% if salles %}
+<h2 class="mt-4">Résultats</h2>
+<div class="row mt-3">
+  {% for salle in salles %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        {% if salle.image %}
+          <img src="{{ salle.image.url }}" class="card-img-top" alt="{{ salle.nom }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ salle.nom }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Capacité : {{ salle.capacite }}
+          </h6>
+          <p class="card-text">{{ salle.description|truncatewords:15 }}</p>
+          <h6>Équipements :</h6>
+          <ul class="list-group list-group-flush mb-3">
+            {% for eq in salle.equipements.all %}
+              <li class="list-group-item">{{ eq.nom }}</li>
+            {% empty %}
+              <li class="list-group-item">Aucun équipement</li>
+            {% endfor %}
+          </ul>
+          <a href="{% url 'reserver_salle' salle.id %}?date={{ request.GET.date }}&creneau={{ request.GET.creneau }}"
+             class="btn btn-primary w-100">
+            Réserver
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% elif request.GET %}
+<div class="alert alert-info mt-4">
+  Aucune salle ne correspond à vos filtres.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'app2/base.html' %}
+
+{% block title %}
+  {% if form.instance.pk %}Modifier Salle{% else %}Ajouter Salle{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} Salle</h1>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ form.nom.label_tag }} {{ form.nom }}
+  </div>
+  <div class="mb-3">
+    {{ form.capacite.label_tag }} {{ form.capacite }}
+  </div>
+  <div class="mb-3">
+    {{ form.categorie.label_tag }} {{ form.categorie }}
+  </div>
+  <div class="mb-3">
+    {{ form.description.label_tag }} {{ form.description }}
+  </div>
+  <div class="mb-3">
+    {{ form.image.label_tag }} {{ form.image }}
+  </div>
+
+  {% if salle.image %}
+    <div class="mb-3">
+      <p>Image actuelle :</p>
+      <img src="{{ salle.image.url }}" alt="{{ salle.nom }}" class="img-thumbnail" style="max-width:200px;">
+    </div>
+  {% endif %}
+
+  <button class="btn btn-success">Enregistrer</button>
+  <a class="btn btn-secondary" href="{% url 'gestion_salle_list' %}">Annuler</a>
+</form>
+{% endblock %}

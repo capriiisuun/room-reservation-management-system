@@ -1,0 +1,88 @@
+{% extends "app2/base.html" %}
+
+{% block title %}Accueil - Système de Réservation Universitaire{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center py-5 bg-light">
+    <h1 class="display-4">Bienvenue sur le Système de Réservation</h1>
+    <p class="lead">Réservez facilement vos salles, planifiez vos événements et organisez vos activités en un clic.</p>
+    <hr class="my-4">
+    {% if not user.is_authenticated %}
+        <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Se connecter</a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'inscription' %}" role="button">Créer un compte</a>
+    {% else %}
+        <a class="btn btn-primary btn-lg" href="{% url 'mes_reservations' %}" role="button">Voir mes réservations</a>
+    {% endif %}
+</div>
+
+
+<section class="py-5" id="a-propos">
+    <div class="container">
+        <h2 class="mb-4">À propos du système</h2>
+        <p>
+            Ce système permet aux étudiants, enseignants et personnel administratif de réserver différents types de salles :
+            cours, informatique, laboratoires, conférences, sport, bien-être, etc. Il propose une interface simple,
+            un calendrier interactif, et des filtres de recherche puissants.
+        </p>
+    </div>
+</section>
+
+
+<section class="py-5 bg-light" id="salles">
+    <div class="container">
+        <h2 class="mb-4">Salles disponibles</h2>
+
+        {% for categorie in categories %}
+            <h4 class="mt-5">{{ categorie.nom }} <small class="text-muted">({{ categorie.type_salle }})</small></h4>
+            <div class="row mt-3">
+                {% for salle in categorie.salle_set.all %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            {% if salle.image %}
+                                <img src="{{ salle.image.url }}" class="card-img-top" alt="{{ salle.nom }}">
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ salle.nom }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Capacité : {{ salle.capacite }} personnes</h6>
+                                <p class="card-text">{{ salle.description|truncatewords:20 }}</p>
+
+                                <h6 class="mt-3">Équipements :</h6>
+                                <ul class="list-group list-group-flush mb-3">
+                                    {% for equipement in salle.equipements.all %}
+                                        <li class="list-group-item">{{ equipement.nom }}</li>
+                                    {% empty %}
+                                        <li class="list-group-item">Aucun équipement</li>
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="mt-auto">
+                                    <a href="{% url 'reserver_salle' salle.id %}" class="btn btn-outline-primary w-100">Réserver</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-warning">Aucune salle dans cette catégorie.</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% empty %}
+            <div class="alert alert-info">Aucune catégorie de salle trouvée.</div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="py-5" id="contact">
+    <div class="container">
+        <h2 class="mb-4">Contact</h2>
+        <p>Pour toute question ou assistance technique, veuillez contacter le support :</p>
+        <ul>
+            <li>Email : <a href="mailto:reservation@gmail.com">reservation@gmail.com</a></li>
+            <li>Téléphone : +212 6 18 93 28 36</li>
+            <li>Bureau : AGDAL</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "app2/base.html" %}
+
+{% block title %}Mes Réservations{% endblock %}
+
+{% block content %}
+<h1>Mes Réservations</h1>
+
+<div class="row mt-4">
+    <div class="col-12">
+        {% if reservations %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Salle</th>
+                        <th>Date</th>
+                        <th>Horaire</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.salle.nom }}</td>
+                        <td>{{ reservation.date_debut|date:"d/m/Y" }}</td>
+                        <td>{{ reservation.date_debut|time:"H:i" }} - {{ reservation.date_fin|time:"H:i" }}</td>
+                        <td>
+                            <span class="badge {% if reservation.statut == 'Confirmée' %}bg-success{% elif reservation.statut == 'En attente' %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ reservation.statut }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'detail_reservation' reservation.id %}" class="btn btn-sm btn-info">Détails</a>
+                            {% if reservation.statut != 'Annulée' %}
+                            <a href="{% url 'annuler_reservation' reservation.id %}" class="btn btn-sm btn-danger">Annuler</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Vous n'avez pas encore de réservations.
+        </div>
+        {% endif %}
+        
+        <a href="{% url 'liste_salles' %}" class="btn btn-primary mt-3">Réserver une salle</a>
+    </div>
+</div>
+{% endblock %}
